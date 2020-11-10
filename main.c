@@ -927,95 +927,146 @@
 ////}
 //======================================================
 
-#define MAXSIZE 100
-typedef int SElemType ;
-typedef enum ret_type {ERROR=-1,Ok=0} Status;
-typedef struct
-{
-    SElemType data [ MAXSIZE ];
-    int top ;
-} SqStack , * SqtackPtr ;
-
-Status Push(SqStack *S, SElemType e){
-    if(S->top>=MAXSIZE-1){
-        printf("栈区已满\n");
-        return ERROR;
-    } else{
-        S->top++;
-        S->data[S->top]=e;
-        return Ok;
+//#define MAXSIZE 100
+//typedef int SElemType ;
+//typedef enum ret_type {ERROR=-1,Ok=0} Status;
+//typedef struct
+//{
+//    SElemType data [ MAXSIZE ];
+//    int top ;
+//} SqStack , * SqtackPtr ;
+//
+//Status Push(SqStack *S, SElemType e){
+//    if(S->top>=MAXSIZE-1){
+//        printf("栈区已满\n");
+//        return ERROR;
+//    } else{
+//        S->top++;
+//        S->data[S->top]=e;
+//        return Ok;
+//    }
+//}
+//
+//Status Pop(SqStack *S, SElemType *e)
+//{
+//    if(S->top==-1){
+//        printf("栈区已为空无法删除\n");
+//        return ERROR;
+//    } else{
+//        *e = S->data[S->top];
+//        S->top--;
+//        return Ok;
+//    }
+//}
+//Status suffix(SqStack *S,char str[]){
+//    int length = strlen(str),i=0,j=0;
+//    char str1[10];
+//    while (i<length){
+//        if(isdigit(str[i])){
+//            if(str[i+1]==' '){
+//                str1[j++]=str[i];
+//                str1[j]='\0';
+//                Push(S,atoi(str1));
+//                j=0;
+//
+//            } else{
+//                str1[j++]=str[i];
+//            }
+//        }
+//        if(str[i]=='+'||str[i]=='-'||str[i]=='*'||str[i]=='/'){
+//            SElemType val1,val2;
+//            switch (str[i]){
+//                case '-':
+//                    if(isdigit(str[i+1])){
+//                        str1[j++]='-';
+//                        break;
+//                    } else{
+//                        Pop(S,&val1);
+//                        Pop(S,&val2);
+//                        Push(S,val2-val1);
+//                        break;
+//                    }
+//                case '+':
+//                    Pop(S,&val1);
+//                    Pop(S,&val2);
+//                    Push(S,val2+val1);
+//                    break;
+//                case '*':
+//                    Pop(S,&val1);
+//                    Pop(S,&val2);
+//                    Push(S,val1*val2);
+//                    break;
+//                case '/':
+//                    Pop(S,&val1);
+//                    Pop(S,&val2);
+//                    Push(S,val2/val1);
+//                    break;
+//            }
+//        }
+//        i++;
+//    }
+//    printf("top=%d \n",S->top);
+//    printf("result = %d ",S->data[0]);
+//    return Ok;
+//
+//}
+//int main(){
+//    SqStack S;
+//    S.top=-1;
+//    char str[100];
+//    printf("请输入后缀式 ,字符之间用空格相连\n");
+//    gets(str);
+//    suffix(&S,str);
+//    return 0;
+//}
+//================================================递归
+//int recursion(int n){
+//    if (n>1){
+//        return n*recursion(n-1);
+//    }else{
+//     return  1;
+//    }
+//}
+//int main(){
+//    printf("result = %d",recursion(0));
+//    return 0;
+//}
+//===============================================二叉树
+//
+typedef int elmtype;
+typedef  struct bitree{
+    elmtype data;
+    struct bitree *lchild;
+    struct bitree *rchild;
+}Bitree;
+Bitree *creat_tree(elmtype x){
+    Bitree *p=(Bitree*)malloc(sizeof(Bitree));
+    p->data = x;
+    p->lchild = NULL;
+    p->rchild = NULL;
+    return p;
+}
+void pre_order(Bitree *root){
+    if(root!=NULL){
+        printf("%d ",root->data);
+        pre_order(root->lchild);
+        pre_order(root->rchild);
     }
 }
-
-Status Pop(SqStack *S, SElemType *e)
-{
-    if(S->top==-1){
-        printf("栈区已为空无法删除\n");
-        return ERROR;
+void tree_insert(Bitree **root,elmtype x){
+    if(*root==NULL){
+        *root = creat_tree(x);
+    } else if(x > (*root)->data){
+        tree_insert(&(*root)->rchild,x);
     } else{
-        *e = S->data[S->top];
-        S->top--;
-        return Ok;
+        tree_insert(&(*root)->lchild,x);
     }
-}
-Status suffix(SqStack *S,char str[]){
-    int length = strlen(str),i=0,j=0;
-    char str1[10];
-    while (i<length){
-        if(isdigit(str[i])){
-            if(str[i+1]==' '){
-                str1[j++]=str[i];
-                str1[j]='\0';
-                Push(S,atoi(str1));
-                j=0;
-
-            } else{
-                str1[j++]=str[i];
-            }
-        }
-        if(str[i]=='+'||str[i]=='-'||str[i]=='*'||str[i]=='/'){
-            SElemType val1,val2;
-            switch (str[i]){
-                case '-':
-                    if(isdigit(str[i+1])){
-                        str1[j++]='-';
-                        break;
-                    } else{
-                        Pop(S,&val1);
-                        Pop(S,&val2);
-                        Push(S,val2-val1);
-                        break;
-                    }
-                case '+':
-                    Pop(S,&val1);
-                    Pop(S,&val2);
-                    Push(S,val2+val1);
-                    break;
-                case '*':
-                    Pop(S,&val1);
-                    Pop(S,&val2);
-                    Push(S,val1*val2);
-                    break;
-                case '/':
-                    Pop(S,&val1);
-                    Pop(S,&val2);
-                    Push(S,val2/val1);
-                    break;
-            }
-        }
-        i++;
-    }
-    printf("top=%d \n",S->top);
-    printf("result = %d ",S->data[0]);
-    return Ok;
-
 }
 int main(){
-    SqStack S;
-    S.top=-1;
-    char str[100];
-    printf("请输入后缀式 ,字符之间用空格相连\n");
-    gets(str);
-    suffix(&S,str);
+    Bitree *root = creat_tree(25);
+    tree_insert(&root,67);
+    tree_insert(&root,14);
+    pre_order(root);
     return 0;
 }
+
