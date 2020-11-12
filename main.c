@@ -1056,16 +1056,65 @@ void pre_order(Bitree *root){
 void tree_insert(Bitree **root,elmtype x){
     if(*root==NULL){
         *root = creat_tree(x);
-    } else if(x > (*root)->data){
-        tree_insert(&(*root)->rchild,x);
-    } else{
+    } else if(x < (*root)->data){
         tree_insert(&(*root)->lchild,x);
+    } else{
+        tree_insert(&(*root)->rchild,x);
+    }
+}
+void tree_destroy(Bitree *root){
+    if(root == NULL){
+        return;
+    }
+    if(root->lchild!=NULL){
+        tree_destroy(root->lchild);
+    }
+    if(root->rchild!=NULL){
+        tree_destroy(root->rchild);
+    }
+    free(root);
+}
+void make_empty(Bitree **root){
+    *root = NULL;
+}
+void tree_delete(Bitree **root,elmtype x){
+     if((*root)->data == x){
+       tree_destroy(*root);
+       printf("%d已删除",x);
+       *root = NULL;
+//       make_empty(root);
+       return;
+    } else if((*root)->data>x){
+        tree_delete(&(*root)->lchild,x);
+    } else if(&(*root)->data<x){
+        tree_delete(&(*root)->rchild,x);
+    } else{
+         printf("%d 不存在",x);
+     }
+}
+void tree_search(Bitree *root,elmtype x){
+    static int deep=1;
+    if(root == NULL){
+        printf("数据不存在\n");
+    } else if(x < root->data){
+        deep++;
+        tree_search(root->lchild,x);
+    } else if(x > root->data){
+        deep++;
+        tree_search(root->rchild,x);
+    } else if(root->data == x){
+        printf("%d存在 ",x);
+        printf("深度为： %d",deep);
     }
 }
 int main(){
     Bitree *root = creat_tree(25);
     tree_insert(&root,67);
     tree_insert(&root,14);
+    tree_insert(&root,13);
+//    pre_order(root);
+//    tree_search(root,13);
+    tree_delete(&root,13);
     pre_order(root);
     return 0;
 }
