@@ -1167,96 +1167,139 @@
 //    return 0;
 //}
 ///============================================================================test1
-typedef int elmtype;
-typedef struct bitree{
-    elmtype data;
-    struct bitree *lchild;
-    struct bitree *rchild;
-}Bitree;
-Bitree *creatTree(elmtype data){
-    Bitree *root = (Bitree*)malloc(sizeof(Bitree));
-    root->data = data;
-    root->lchild = NULL;
-    root->rchild = NULL;
-    return root;
+//typedef int elmtype;
+//typedef struct bitree{
+//    elmtype data;
+//    struct bitree *lchild;
+//    struct bitree *rchild;
+//}Bitree;
+//Bitree *creatTree(elmtype data){
+//    Bitree *root = (Bitree*)malloc(sizeof(Bitree));
+//    root->data = data;
+//    root->lchild = NULL;
+//    root->rchild = NULL;
+//    return root;
+//}
+//Bitree *insert(Bitree *root,elmtype data){
+//    if(root==NULL)
+//        return creatTree(data);
+//    if(data < root->data){
+//        root->lchild = insert(root->lchild,data);
+//    } else{
+//        root->rchild = insert(root->rchild,data);
+//    }
+//    return root;
+//}
+//void pre_order(Bitree *root){
+//    if(root!=NULL){
+//        printf("%d ",root->data);
+//        pre_order(root->lchild);
+//        pre_order(root->rchild);
+//    }
+//}
+//Bitree *find_minimun(Bitree *root){
+//    if(root->lchild == NULL){
+//        return root;
+//    } else{
+//        find_minimun(root->lchild);
+//    }
+//}
+//void searchTree(Bitree *root,elmtype data){
+//    static int depth=1;
+//    if(root==NULL){
+//        printf("%d not in the tree",data);
+//    } else if(data < root->data){
+//        depth++;
+//        searchTree(root->lchild,data);
+//    } else if(data > root->data){
+//        depth++;
+//        searchTree(root->rchild,data);
+//    } else {
+//        printf("the depth of the data is %d\n",depth);
+//        printf("%d has been found in the tree\n ",data);
+//    }
+//}
+//Bitree *delete(Bitree *root,int x){
+//    if(root == NULL){
+//        return NULL;
+//    }
+//    if(x > root->data)
+//        root->rchild = delete(root->rchild,x);
+//    else if(x < root->data)
+//        root->lchild = delete(root->lchild,x);
+//    else{
+//        if(root->lchild == NULL&&root->rchild==NULL){
+//            free(root);
+//            return NULL;
+//        } else if(root->lchild==NULL||root->rchild==NULL){
+//            Bitree *temp;
+//            if(root->lchild == NULL)
+//                temp = root->rchild;
+//            else
+//                temp = root->lchild;
+//            free(root);
+//            return temp;
+//        } else{
+//            Bitree *temp = find_minimun(root->rchild);
+//            root->data = temp->data;
+//            root->rchild = delete(root->rchild,temp->data);
+//        }
+//    }
+//    return root;
+//}
+//int main(){
+//    Bitree *root=creatTree(10);
+//    insert(root,89);
+//    insert(root,67);
+//    insert(root,3);
+//    insert(root,1);
+//    pre_order(root);
+//    printf("\n");
+//    searchTree(root,3);
+//    delete(root,3);
+//    pre_order(root);
+//}
+//==========================================================
+typedef struct node{
+    int data;
+    struct node *next;
+}Node;
+Node *createHead(){
+    Node *head = (Node*)malloc(sizeof(Node));
+    head->next = NULL;
+    return head;
 }
-Bitree *insert(Bitree *root,elmtype data){
-    if(root==NULL)
-        return creatTree(data);
-    if(data < root->data){
-        root->lchild = insert(root->lchild,data);
-    } else{
-        root->rchild = insert(root->rchild,data);
-    }
-    return root;
-}
-void pre_order(Bitree *root){
-    if(root!=NULL){
-        printf("%d ",root->data);
-        pre_order(root->lchild);
-        pre_order(root->rchild);
+void headPrint(Node *head){
+    Node *p=head->next;
+    while (p!=NULL){
+        printf("%d->",p->data);
+        p=p->next;
     }
 }
-Bitree *find_minimun(Bitree *root){
-    if(root->lchild == NULL){
-        return root;
-    } else{
-        find_minimun(root->lchild);
-    }
-}
-void searchTree(Bitree *root,elmtype data){
-    static int depth=1;
-    if(root==NULL){
-        printf("%d not in the tree",data);
-    } else if(data < root->data){
-        depth++;
-        searchTree(root->lchild,data);
-    } else if(data > root->data){
-        depth++;
-        searchTree(root->rchild,data);
-    } else {
-        printf("the depth of the data is %d\n",depth);
-        printf("%d has been found in the tree\n ",data);
-    }
-}
-Bitree *delete(Bitree *root,int x){
-    if(root == NULL){
-        return NULL;
-    }
-    if(x > root->data)
-        root->rchild = delete(root->rchild,x);
-    else if(x < root->data)
-        root->lchild = delete(root->lchild,x);
-    else{
-        if(root->lchild == NULL&&root->rchild==NULL){
-            free(root);
-            return NULL;
-        } else if(root->lchild==NULL||root->rchild==NULL){
-            Bitree *temp;
-            if(root->lchild == NULL)
-                temp = root->rchild;
-            else
-                temp = root->lchild;
-            free(root);
-            return temp;
+void Fibonacci(int n,Node *head){
+     int number1=1,number2=1;
+     int i=1;
+    while (i<=n){
+        if(i==1||i==2){
+            Node *newNode = (Node*)malloc(sizeof(Node));
+            newNode->data =1;
+            newNode->next = head->next;
+            head->next = newNode;
         } else{
-            Bitree *temp = find_minimun(root->rchild);
-            root->data = temp->data;
-            root->rchild = delete(root->rchild,temp->data);
+            Node *newNode = (Node*)malloc(sizeof(Node));
+            newNode->data =number1 + number2;
+            newNode->next = head->next;
+            head->next = newNode;
+            int tempt = number2;
+            number2 = number2 + number1;
+            number1 = tempt;
         }
+        i++;
     }
-    return root;
 }
 int main(){
-    Bitree *root=creatTree(10);
-    insert(root,89);
-    insert(root,67);
-    insert(root,3);
-    insert(root,1);
-    pre_order(root);
-    printf("\n");
-    searchTree(root,3);
-    delete(root,3);
-    pre_order(root);
+    Node *head = createHead();
+    Fibonacci(10,head);
+    headPrint(head);
+    return 0;
 }
-
